@@ -35,15 +35,45 @@ namespace CSharpCommander.View
                 DrivesList.Add(disc);
             }
 
-            driveCharSelect1.ItemsSource = DrivesList;
+            driveCharSelect.ItemsSource = DrivesList;
         }
 
-        private List<DiscElement> GetDiscElements(string path)
+        private void createFileList(string path)
         {
-            MyDirectory myDirectory = new MyDirectory(path);
-            List<DiscElement> result = myDirectory.GetSubDiscElements();
-            return result;
+            string parentPath = path;
+            MyDirectory myDirectory = new MyDirectory(parentPath);
+            listOfDiscElements.Children.Clear();
+            List<DiscElement> allFiles = myDirectory.GetSubDiscElements();
+            foreach (DiscElement file in allFiles)
+            {
+                string prePath = file.Path;
+                string postPath = prePath.Replace(parentPath + @"\", "");
+                DiscElementView discElementView = new DiscElementView(file);
+                listOfDiscElements.Children.Add(discElementView);
+                discElementView.openDiscElementClick += createFileListEventHandler;
+            }
+            //FileSystemWatcher fileSystemWatcher = new FileSystemWatcher(parentPath);
+            //fileSystemWatcher.Created += FileSystemWatcher_Created;
+            //fileSystemWatcher.Renamed += FileSystemWatcher_Created;
+            //fileSystemWatcher.EnableRaisingEvents = true;
         }
+
+        private void getDiscElementList()
+        {
+            createFileList(pathForDiscElements.Text);
+        }
+
+        private void createFileListEventHandler(DiscElement discElement)
+        {
+            createFileList(discElement.Path);
+        }
+
+        //private List<DiscElement> GetDiscElements(string path)
+        //{
+        //    MyDirectory myDirectory = new MyDirectory(path);
+        //    List<DiscElement> result = myDirectory.GetSubDiscElements();
+        //    return result;
+        //}
 
         private void Path_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -56,14 +86,14 @@ namespace CSharpCommander.View
             //MessageBox.Show(source.Text);
             try
             {
-                FolderOneElements = GetDiscElements(source.Text);
+                createFileList(source.Text);
             }
             catch { }
-            folderOneElements.Items.Clear();
-            foreach (DiscElement ele in FolderOneElements)
-            {
-                folderOneElements.Items.Add(ele.Name);
-            }
+            //listOfDiscElements.Children.Clear();
+            //foreach (DiscElement ele in FolderOneElements)
+            //{
+            //    listOfDiscElements.Children.Add(new DiscElementView(ele));
+            //}
         }
     }
 }

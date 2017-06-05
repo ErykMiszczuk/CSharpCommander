@@ -21,8 +21,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="Path1" Text="{Binding Path=SelectedItem.VolumeLetter, ElementName=driveCharSelect1}" Grid.ColumnSpan="4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextChanged="Path_TextChanged" />
-        <ListBox x:Name="folderOneElements" Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="1" Grid.RowSpan="7" Background="Azure" />
-        <ComboBox x:Name="driveCharSelect1" DisplayMemberPath="DriveDesc" SelectedValuePath="VolumeLetter" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="0" SelectedIndex="0" />
+        <TextBox x:Name="pathForDiscElements" Text="{Binding Path=SelectedItem.VolumeLetter, ElementName=driveCharSelect}" Grid.ColumnSpan="4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextChanged="Path_TextChanged" />
+        <ScrollViewer Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="1" Grid.RowSpan="7">
+            <StackPanel x:Name="listOfDiscElements" />
+        </ScrollViewer>
+        <ComboBox x:Name="driveCharSelect" DisplayMemberPath="DriveDesc" SelectedValuePath="VolumeLetter" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="0" SelectedIndex="0" />
     </Grid>
 </UserControl>

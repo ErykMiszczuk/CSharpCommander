@@ -1,0 +1,27 @@
+﻿<UserControl x:Name="detailsOfDiscElement" x:Class="CSharpCommander.View.DiscElementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CSharpCommander.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="36" d:DesignWidth="300" MouseDoubleClick="OpenDiscElement">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="pathOfDiscElement" TextWrapping="WrapWithOverflow" Text="TextBlock" Grid.Column="0" Grid.ColumnSpan="4" FontSize="24"/>
+        <TextBlock x:Name="typeOfDiscElement" TextWrapping="WrapWithOverflow" Text="TextBlock" Grid.Column="4" Grid.ColumnSpan="2" FontSize="24"/>
+        <TextBlock x:Name="creationTimeOfDiscElement" TextWrapping="WrapWithOverflow" Text="TextBlock" Grid.Column="6" Grid.ColumnSpan="2" FontSize="24"/>
+    </Grid>
+</UserControl>
