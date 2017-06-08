@@ -24,6 +24,9 @@ namespace CSharpCommander
     {
         //public List<DriveData> DrivesList = new List<DriveData>();
         //public List<DiscElement> FolderTwoElements = new List<DiscElement>();
+
+        public List<string> pathsToCopy = new List<string>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,6 +41,11 @@ namespace CSharpCommander
             ////driveCharSelect1.ItemsSource = DrivesList;
             //driveCharSelect2.ItemsSource = DrivesList;
 
+        }
+
+        private void Copy_Click(object sender, RoutedEventArgs e)
+        {
+            etykieta.Content = $"Obiektów zaznaczono {pathsToCopy.Count}";
         }
 
         //private void Path_TextChanged(object sender, TextChangedEventArgs e)

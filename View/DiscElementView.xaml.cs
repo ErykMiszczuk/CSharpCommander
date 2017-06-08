@@ -69,5 +69,14 @@ namespace CSharpCommander.View
                 System.Diagnostics.Process.Start(discElement.Path);
             }
         }
+        public delegate void checkedDiscElementClick();
+        public event checkedDiscElementClick checkedDiscElementEvent;
+        private void checkedDiscElement_Click(object sender, RoutedEventArgs e)
+        {
+            if(checkedDiscElementEvent != null)
+            {
+                checkedDiscElementEvent.Invoke();
+            }
+        }
     }
 }
