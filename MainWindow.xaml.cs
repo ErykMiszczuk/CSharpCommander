@@ -1,4 +1,5 @@
 ﻿using CSharpCommander.DataModels;
+using CSharpCommander.View;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace CSharpCommander
         //public List<DriveData> DrivesList = new List<DriveData>();
         //public List<DiscElement> FolderTwoElements = new List<DiscElement>();
 
-        public List<string> pathsToCopy = new List<string>();
+        
 
         public MainWindow()
         {
@@ -45,7 +46,44 @@ namespace CSharpCommander
 
         private void Copy_Click(object sender, RoutedEventArgs e)
         {
-            etykieta.Content = $"Obiektów zaznaczono {pathsToCopy.Count}";
+            int pathsCount = 0;
+            List<String> ptc = new List<String>();
+            string targetPath = "\\";
+            foreach (UIElement panel in CSharpComGrid.Children)
+            {
+                if (panel is ListOfFilesPanelView)
+                {
+
+                    List<String> pptc = ((ListOfFilesPanelView)panel).PathsToCopy;
+                    foreach (string path in pptc)
+                    {
+                        ptc.Add(path);
+                    }
+                    if ((pptc.Count() <= 0 ) && (((ListOfFilesPanelView)panel).PanelPath() != null))
+                    {
+                        targetPath = ((ListOfFilesPanelView)panel).PanelPath();
+                    }
+                    int ptcc = ptc.Count;
+                    pathsCount += ptcc;
+                }
+            }
+
+            etykieta.Content = $"Obiektów zaznaczono {pathsCount}";
+
+            foreach (string path in ptc)
+            {
+                File.Copy(path, targetPath+"\\"+ System.IO.Path.GetFileName(path));
+            }
+
+            foreach (UIElement panel in CSharpComGrid.Children)
+            {
+                if (panel is ListOfFilesPanelView)
+                {
+                    List<string> pptc = ((ListOfFilesPanelView)panel).PathsToCopy;
+                    pptc.Clear();
+                }
+            }
+            ptc.Clear();
         }
 
         //private void Path_TextChanged(object sender, TextChangedEventArgs e)

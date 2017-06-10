@@ -25,19 +25,53 @@ namespace CSharpCommander.View
     {
         public List<DriveData> DrivesList = new List<DriveData>();
         public List<DiscElement> FolderOneElements = new List<DiscElement>();
+        private List<string> pathsToCopy = new List<string>();
         public ListOfFilesPanelView()
         {
             InitializeComponent();
 
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            foreach (DriveInfo d in drives)
+            try
             {
-                DriveData disc = new DriveData(d.VolumeLabel, d.Name);
-                DrivesList.Add(disc);
+                DriveInfo[] drives = DriveInfo.GetDrives();
+                foreach (DriveInfo d in drives)
+                {
+                    DriveData disc = new DriveData(d.VolumeLabel, d.Name);
+                    DrivesList.Add(disc);
+                }
             }
-
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
             driveCharSelect.ItemsSource = DrivesList;
         }
+
+        public List<String> PathsToCopy
+        {
+            get
+            {
+                return  pathsToCopy;
+            }
+        }
+
+        public string PanelPath()
+        {
+            return pathForDiscElements.Text;
+        }
+        //public List<string> PathsToCopy(string path) { }
+
+
+        //{
+        //    get
+        //    {
+        //        return pathsToCopy;
+        //    }
+
+        //    set
+        //    {
+        //        pathsToCopy.Add(path);
+        //    }
+        //};
 
         private void createFileList(string path)
         {
@@ -57,24 +91,28 @@ namespace CSharpCommander.View
             }
             FileSystemWatcher filesystemwatcher = new FileSystemWatcher(parentPath);
             filesystemwatcher.Created += FileSystemWatcher_Created;
+            filesystemwatcher.Deleted += FileSystemWatcher_Created;
             filesystemwatcher.Renamed += FileSystemWatcher_Created;
             filesystemwatcher.EnableRaisingEvents = true;
         }
         
         private void checkedDiscElementEventHandler()
         {
-            MainWindow win = (MainWindow)Application.Current.MainWindow;
+            //MainWindow win = (MainWindow)Application.Current.MainWindow;
             int counter = 0;
             foreach (UIElement discView in listOfDiscElements.Children)
             {
                 if (((DiscElementView)discView).checkedDiscElement.IsChecked.Value)
                 {
                     counter++;
-                    win.pathsToCopy.Add(((DiscElementView)discView).pathOfDiscElement.Text);
+                    //var source = discView as DiscElement;
+                    pathsToCopy.Add(((DiscElementView)discView).FullPath);
+                    //pathsToCopy.Add(((DiscElementView)discView).pathOfDiscElement.Text + ((DiscElementView)discView).typeOfDiscElement.Text);
+                    //PathsToCopy(((DiscElementView)discView).pathOfDiscElement.Text);
                 }
                 else if (counter == 0)
                 {
-                    win.pathsToCopy.Clear();
+                    pathsToCopy.Clear();
                 }
             }
             //label.Content = $"Obiektów zaznaczono {counter}";
@@ -103,7 +141,8 @@ namespace CSharpCommander.View
 
         private void createFileListEventHandler(DiscElement discElement)
         {
-            createFileList(discElement.Path);
+            pathForDiscElements.Text = discElement.Path;
+            createFileList(pathForDiscElements.Text);
         }
 
         private void Path_TextChanged(object sender, TextChangedEventArgs e)

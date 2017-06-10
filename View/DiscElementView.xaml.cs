@@ -23,9 +23,15 @@ namespace CSharpCommander.View
     public partial class DiscElementView : UserControl
     {
         DiscElement discElement;
+        private string fullPath;
+
+        public string FullPath { get => fullPath; }
+
         public DiscElementView(DiscElement discElement)
         {
             this.discElement = discElement;
+
+            fullPath = discElement.Path;
 
             InitializeComponent();
 
