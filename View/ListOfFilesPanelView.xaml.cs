@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -58,20 +59,6 @@ namespace CSharpCommander.View
         {
             return pathForDiscElements.Text;
         }
-        //public List<string> PathsToCopy(string path) { }
-
-
-        //{
-        //    get
-        //    {
-        //        return pathsToCopy;
-        //    }
-
-        //    set
-        //    {
-        //        pathsToCopy.Add(path);
-        //    }
-        //};
 
         private void createFileList(string path)
         {
@@ -79,7 +66,6 @@ namespace CSharpCommander.View
             MyDirectory myDirectory = new MyDirectory(parentPath);
             listOfDiscElements.Children.Clear();
             List<DiscElement> allFiles = myDirectory.GetSubDiscElements();
-            
             foreach (DiscElement file in allFiles)
             {
                 string prePath = file.Path;
@@ -95,34 +81,46 @@ namespace CSharpCommander.View
             filesystemwatcher.Renamed += FileSystemWatcher_Created;
             filesystemwatcher.EnableRaisingEvents = true;
         }
-        
+
+        private void sortFileList(object sender, RoutedEventArgs e)
+        {
+            string parentPath = PanelPath();
+            MyDirectory myDirectory = new MyDirectory(parentPath);
+            listOfDiscElements.Children.Clear();
+            List<DiscElement> allFiles = myDirectory.GetSubDiscElements();
+            for (int i = 1; i < allFiles.Count; ++i) allFiles.Sort();
+            foreach (DiscElement file in allFiles)
+            {
+                string prePath = file.Path;
+                string postPath = prePath.Replace(parentPath + @"\", "");
+                DiscElementView discElementView = new DiscElementView(file);
+                listOfDiscElements.Children.Add(discElementView);
+                discElementView.openDiscElementClick += createFileListEventHandler;
+                discElementView.checkedDiscElementEvent += checkedDiscElementEventHandler;
+            }
+            FileSystemWatcher filesystemwatcher = new FileSystemWatcher(parentPath);
+            filesystemwatcher.Created += FileSystemWatcher_Created;
+            filesystemwatcher.Deleted += FileSystemWatcher_Created;
+            filesystemwatcher.Renamed += FileSystemWatcher_Created;
+            filesystemwatcher.EnableRaisingEvents = true;
+        }
+
         private void checkedDiscElementEventHandler()
         {
-            //MainWindow win = (MainWindow)Application.Current.MainWindow;
             int counter = 0;
             foreach (UIElement discView in listOfDiscElements.Children)
             {
                 if (((DiscElementView)discView).checkedDiscElement.IsChecked.Value)
                 {
                     counter++;
-                    //var source = discView as DiscElement;
                     pathsToCopy.Add(((DiscElementView)discView).FullPath);
-                    //pathsToCopy.Add(((DiscElementView)discView).pathOfDiscElement.Text + ((DiscElementView)discView).typeOfDiscElement.Text);
-                    //PathsToCopy(((DiscElementView)discView).pathOfDiscElement.Text);
                 }
                 else if (counter == 0)
                 {
                     pathsToCopy.Clear();
                 }
             }
-            //label.Content = $"Obiektów zaznaczono {counter}";
         }
-        //private DiscElementView parentPath(string path)
-        //{
-        //    string parentPath = Convert.ToString(Directory.GetParent(path));
-        //    DiscElement goUp = new MyDirectory(parentPath);
-        //    return goUp;
-        //}
 
         private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
         {
@@ -145,21 +143,92 @@ namespace CSharpCommander.View
             createFileList(pathForDiscElements.Text);
         }
 
-        private void Path_TextChanged(object sender, TextChangedEventArgs e)
+        private void createNewFolder(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(Convert.ToString(e.Source.Text));
-            var source = e.OriginalSource as TextBox;
+            Directory.CreateDirectory(pathForDiscElements.Text + @"\NewFolder");
+        }
 
-            if (source == null)
-                return;
-
-            //MessageBox.Show(source.Text);
-            try
+        private void pathForDiscElements_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
             {
-                createFileList(source.Text);
+                createFileList(pathForDiscElements.Text);
             }
-            catch { }
-            
+        }
+
+        private void driveCharSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            createFileList(pathForDiscElements.Text);
+        }
+
+        private void searchForFile()
+        {
+            string parentPath = PanelPath();
+            string destFile = searchForFiles.Text;
+            MyDirectory myDirectory = new MyDirectory(parentPath);
+            listOfDiscElements.Children.Clear();
+            List<DiscElement> allFiles = myDirectory.GetSubDiscElements();
+            var filteredFiles = allFiles.Where(f => f.Name.Contains(destFile));
+            foreach (DiscElement file in filteredFiles)
+            {
+                string prePath = file.Path;
+                DiscElementView discElementView = new DiscElementView(file);
+                listOfDiscElements.Children.Add(discElementView);
+                discElementView.openDiscElementClick += createFileListEventHandler;
+                discElementView.checkedDiscElementEvent += checkedDiscElementEventHandler;
+                discElementView.imgPopupMouseEnterEvent += imgPopupMouseEnterEventHandler;
+                discElementView.imgPopupMouseLeaveEvent += imgPopupMouseLeaveEventHandler;
+                discElementView.imgPopupMouseOverEvent += imgPopupMouseOverEventHandler;
+            }
+            FileSystemWatcher filesystemwatcher = new FileSystemWatcher(parentPath);
+            filesystemwatcher.Created += FileSystemWatcher_Created;
+            filesystemwatcher.Deleted += FileSystemWatcher_Created;
+            filesystemwatcher.Renamed += FileSystemWatcher_Created;
+            filesystemwatcher.EnableRaisingEvents = true;
+        }
+
+        private void imgPopupMouseEnterEventHandler(BitmapImage source)
+        {
+            //Popup imgPopup = new Popup(); 
+            imgPopup.Height = (source.Height) / 5;
+            imgPopup.Width = (source.Width) / 5;
+            imgPopup.IsOpen = true;
+            imgPopup.PlacementTarget = listOfDiscElements;
+            imgPopup.Child = new Image
+            {
+                Source = source,
+                VerticalAlignment = VerticalAlignment.Center
+            };  
+        }
+
+        private void imgPopupMouseLeaveEventHandler()
+        {
+            imgPopup.Height = 0;
+            imgPopup.Width = 0;
+            imgPopup.IsOpen = false;
+        }
+
+        private void imgPopupMouseOverEventHandler(MouseEventArgs e)
+        {
+            imgPopup.HorizontalOffset = e.GetPosition(this).X;
+            imgPopup.VerticalOffset = e.GetPosition(this).Y;
+            imgPopup.IsOpen = true;
+        }
+
+        private void searchForFiles_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            searchForFile();
+        }
+
+        private void goUp_Click(object sender, RoutedEventArgs e)
+        {
+            string path = pathForDiscElements.Text;
+            if (System.IO.Path.GetDirectoryName(path) != null)
+            {
+                path = System.IO.Path.GetDirectoryName(path);
+            }
+            pathForDiscElements.Text = path;
+            createFileList(path);
         }
     }
 }

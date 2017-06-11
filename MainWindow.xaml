@@ -35,7 +35,8 @@
         <View:ListOfFilesPanelView x:Name="listOfFilesPanel1" Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="1" Grid.RowSpan="8"/>
         <View:ListOfFilesPanelView x:Name="listOfFilesPanel2" Grid.ColumnSpan="5" Grid.Column="6" Grid.Row="1" Grid.RowSpan="8"/>
         <Button x:Name="Copy" Grid.ColumnSpan="2" Content="Copy" Grid.Column="0" Grid.Row="9" Click="Copy_Click" />
-        <Label x:Name="etykieta" Content="Label" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="9"/>
-        <Label x:Name="etykietaPath" Content="C:\" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="9"/>
+        <Button x:Name="Delete" Grid.ColumnSpan="2" Content="Delete" Grid.Column="2" Grid.Row="9" Click="Delete_Click" />
+        <Label x:Name="etykieta" Content="Label" Grid.Column="6" Grid.ColumnSpan="2" Grid.Row="9"/>
+        <Label x:Name="etykietaPath" Content="C:\" Grid.Column="8" Grid.ColumnSpan="2" Grid.Row="9"/>
     </Grid>
 </Window>

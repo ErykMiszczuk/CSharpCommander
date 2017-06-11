@@ -23,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="pathOfDiscElement" TextWrapping="NoWrap" Text="NoName" Grid.Column="1" Grid.ColumnSpan="4" FontSize="14" VerticalAlignment="Center"/>
+        <TextBlock x:Name="pathOfDiscElement" TextWrapping="NoWrap" Text="NoName" Grid.Column="1" Grid.ColumnSpan="4" FontSize="14" VerticalAlignment="Center" MouseEnter="pathOfDiscElement_MouseEnter" MouseLeave="pathOfDiscElement_MouseLeave" MouseMove="pathOfDiscElement_MouseMove"/>
         <TextBlock x:Name="typeOfDiscElement" TextWrapping="NoWrap" Text="Other" Grid.Column="5" Grid.ColumnSpan="3" FontSize="14" VerticalAlignment="Center"/>
         <TextBlock x:Name="creationTimeOfDiscElement" TextWrapping="NoWrap" Text="'96" Grid.Column="8" Grid.ColumnSpan="2" FontSize="14" VerticalAlignment="Center"/>
         <CheckBox x:Name="checkedDiscElement" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Click="checkedDiscElement_Click" />

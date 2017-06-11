@@ -16,15 +16,26 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition MaxHeight="36" MinHeight="14" Height="*"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="pathForDiscElements" Text="{Binding Path=SelectedItem.VolumeLetter, ElementName=driveCharSelect}" Grid.ColumnSpan="4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" TextChanged="Path_TextChanged" />
-        <ScrollViewer Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" HorizontalScrollBarVisibility="Auto">
+        <TextBox x:Name="pathForDiscElements" Text="{Binding Path=SelectedItem.VolumeLetter, ElementName=driveCharSelect}" Grid.ColumnSpan="4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" KeyDown="pathForDiscElements_KeyDown" />
+        <ScrollViewer Grid.ColumnSpan="5" Grid.Column="0" Grid.Row="2" Grid.RowSpan="4" HorizontalScrollBarVisibility="Auto">
             <StackPanel x:Name="listOfDiscElements"/>
         </ScrollViewer>
-        <ComboBox x:Name="driveCharSelect" DisplayMemberPath="DriveDesc" SelectedValuePath="VolumeLetter" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="0" SelectedIndex="0" />
+        <ComboBox x:Name="driveCharSelect" DisplayMemberPath="DriveDesc" SelectedValuePath="VolumeLetter" Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="0" SelectedIndex="0" SelectionChanged="driveCharSelect_SelectionChanged" />
+        <Button x:Name="compareByName" Grid.ColumnSpan="1" Content="Sort" Grid.Row="6" Click="sortFileList"/>
+        <Button x:Name="createNewDirectory" Grid.ColumnSpan="1" Content="Nowy Folder" Grid.Row="6" Grid.Column="1" Click="createNewFolder"/>
+        <TextBox x:Name="searchForFiles" Grid.ColumnSpan="2" Grid.Row="6" Grid.Column="2" TextWrapping="Wrap" TextChanged="searchForFiles_TextChanged"  />
+        <Button x:Name="goUp" Grid.ColumnSpan="1" Content="Up" Grid.Row="1" Click="goUp_Click"/>
+        <Popup x:Name="imgPopup"  MinWidth="250" MinHeight="250" IsOpen="True">
+            <StackPanel>
+                <Label>Test</Label>
+            </StackPanel>
+        </Popup>
     </Grid>
 </UserControl>

@@ -41,5 +41,10 @@ namespace CSharpCommander.DataModels
         {
             return string.Compare(System.IO.Path.GetFileNameWithoutExtension(this.Path), System.IO.Path.GetFileNameWithoutExtension(other.Path));
         }
+
+        //public int CompareTo(DiscElement other)
+        //{
+        //    return string.Compare(System.IO.Path.GetFileNameWithoutExtension(this.Path), System.IO.Path.GetFileNameWithoutExtension(other.Path));
+        //}
     }
 }

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -82,6 +83,49 @@ namespace CSharpCommander.View
             if(checkedDiscElementEvent != null)
             {
                 checkedDiscElementEvent.Invoke();
+            }
+        }
+
+        public delegate void imgPopupMouseEnter(BitmapImage source);
+        public event imgPopupMouseEnter imgPopupMouseEnterEvent;
+
+        private void pathOfDiscElement_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (typeOfDiscElement.Text == ".jpg")
+            {
+                BitmapImage source = new BitmapImage(new Uri(FullPath));
+                if (imgPopupMouseEnterEvent != null)
+                {
+                    imgPopupMouseEnterEvent.Invoke(source);
+                }
+            }
+        }
+
+        public delegate void imgPopupMouseLeave();
+        public event imgPopupMouseLeave imgPopupMouseLeaveEvent;
+
+        private void pathOfDiscElement_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (typeOfDiscElement.Text == ".jpg")
+            {
+                if (imgPopupMouseLeaveEvent != null)
+                {
+                    imgPopupMouseLeaveEvent.Invoke();
+                }
+            }
+        }
+
+        public delegate void imgPopupMouseOver(MouseEventArgs e);
+        public event imgPopupMouseOver imgPopupMouseOverEvent;
+
+        private void pathOfDiscElement_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (typeOfDiscElement.Text == ".jpg")
+            {
+                if (imgPopupMouseOverEvent != null)
+                {
+                    imgPopupMouseOverEvent.Invoke(e);
+                }
             }
         }
     }

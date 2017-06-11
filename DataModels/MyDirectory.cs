@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CSharpCommander.DataModels
 {
@@ -109,23 +110,23 @@ namespace CSharpCommander.DataModels
         /// <returns>zwraca listę podfolderów danego folderu</returns>
         public MyDirectory[] GetSubDirectories()
         {
-            //try
-            //{
+            List<MyDirectory> result = new List<MyDirectory>();
+            try
+            {
 
                 string[] subDirs = Directory.GetDirectories(Path);
 
-                List<MyDirectory> result = new List<MyDirectory>();
                 foreach (string dir in subDirs)
                 {
                     result.Add(new MyDirectory(dir));
                 }
-                return result.ToArray();
 
-            //}
-            //catch(Exception e)
-            //{
-            //   MainWindow.show
-            //}
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            return result.ToArray();
 
         }
 
